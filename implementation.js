@@ -72,18 +72,47 @@ function writeResult(playerSelection, computerSelection) {
                 "Draw! Scissors draw Scissors";
 
         default:
-            return "Huge Error!";
+            return "Please enter a valid word";
     }
 }
 
 /** This function is used to play a 5 round game, keep the score and declare a winner. 
  *  Function playSingleRound() must be rewritten to return a result, not to write out outcome.
+ *  This function should take the output from that function and use it to keep score. It should loop 5 times.
+ *  Every time, the user is asked to enter his choice. Based on that choice, one game will be played. 
+ *  Based on the result, score will be updated.
+ *  When 5 games are played, final winner will be declared.
 */
-function game(playerSelection) {
-    const outcome = playSingleRound(playerSelection, getComputerChoice());
-    console.log(outcome);
+function game() {    
+    let computerScore = 0;
+    let playerScore = 0;
+    for (let i = 0; i < 5; i++) {
+        /** Prompt user for his selection */
+        const playerSelection = prompt("Rock|Paper|Scissors?");
+        const outcome = playSingleRound(playerSelection, getComputerChoice());
+
+        switch(outcome) {
+            case "player":
+                playerScore++;
+                break;
+            
+            case "computer":
+                computerScore++;
+                break;
+        }
+
+        console.log(`Current score: ${playerScore} - ${computerScore}`)
+    }
+
+    if (playerScore > computerScore) {
+        console.log(`Player Wins! Final score: ${playerScore} - ${computerScore}`);
+    }
+    else if (computerScore > playerScore) {
+        console.log(`Computer Wins! Final score: ${playerScore} - ${computerScore}`);
+    }
+    else {
+        console.log(`It's a Draw! Final score: ${playerScore} - ${computerScore}`);
+    }
 }
 
-/** Prompt user for his selection */
-const userSelection = prompt("Rock|Paper|Scissors?");
-game(userSelection);
+game();
