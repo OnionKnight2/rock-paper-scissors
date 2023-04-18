@@ -101,7 +101,7 @@ function game() {
                 break;
         }
 
-        console.log(`Current score: ${playerScore} - ${computerScore}`)
+        console.log(`Current score: ${playerScore} - ${computerScore}`);
     }
 
     if (playerScore > computerScore) {
