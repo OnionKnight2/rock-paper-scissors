@@ -22,24 +22,53 @@ function getComputerChoice() {
  *  Based on those parameters, it selects a winner.
  *  Function returns a string that declares the winner of that round. 
  *  Player selection should be case insensitive.
+ * 
+ * Function must be rewritten to just return a result.
+ * It calls another function to write out the result.
+ * This function now only returns who won: player or computer or if it's a tie
  */
 function playSingleRound(playerSelection, computerSelection) {
     playerSelectionLowerCase = playerSelection.toLowerCase();
     computerSelectionLowerCase = computerSelection.toLowerCase();
+    console.log(writeResult(playerSelectionLowerCase, computerSelectionLowerCase));
+
     switch(playerSelectionLowerCase) {
         case "rock":
-            return (computerSelectionLowerCase === "rock") ? "Draw! Rock draws Rock" :
+            return (computerSelectionLowerCase === "rock") ? "draw" :
+            (computerSelectionLowerCase === "paper") ? "computer" : "player";
+        
+        case "paper":
+            return (computerSelectionLowerCase === "rock") ? "player" :
+            (computerSelectionLowerCase === "paper") ? "draw" : "computer";
+        
+        case "scissors":
+            return (computerSelectionLowerCase === "rock") ? "computer" :
+            (computerSelectionLowerCase === "paper") ? "player" : "draw";
+
+        default:
+            return "error!";
+    }
+}
+
+/** This is a helper function used to write out outcome for a single game. 
+ *  It takes 2 parameters, player selection and a computer selection.
+ *  Based on them, it returns a string containing a result, the winner and the loser.
+ */
+function writeResult(playerSelection, computerSelection) {
+    switch(playerSelection) {
+        case "rock":
+            return (computerSelection === "rock") ? "Draw! Rock draws Rock" :
                 (computerSelectionLowerCase === "paper") ? "You Lose! Paper beats Rock" :
                 "You Win! Rock beats Scissors";
         
         case "paper":
-            return (computerSelectionLowerCase === "rock") ? "You Win! Paper beats Rock" :
-                (computerSelectionLowerCase === "paper") ? "Draw! Paper draws Paper" :
+            return (computerSelection === "rock") ? "You Win! Paper beats Rock" :
+                (computerSelection === "paper") ? "Draw! Paper draws Paper" :
                 "You Lose! Scissors beat Paper";
         
         case "scissors":
-            return (computerSelectionLowerCases === "rock") ? "You Lose! Rock beats Scissors" :
-                (computerSelectionLowerCase === "paper") ? "You Win! Scissors beat Paper" :
+            return (computerSelection === "rock") ? "You Lose! Rock beats Scissors" :
+                (computerSelection === "paper") ? "You Win! Scissors beat Paper" :
                 "Draw! Scissors draw Scissors";
 
         default:
@@ -47,10 +76,14 @@ function playSingleRound(playerSelection, computerSelection) {
     }
 }
 
-/** This function is used to play a 5 round game, keep the score and declare a winner. */
-function game() {
-
+/** This function is used to play a 5 round game, keep the score and declare a winner. 
+ *  Function playSingleRound() must be rewritten to return a result, not to write out outcome.
+*/
+function game(playerSelection) {
+    const outcome = playSingleRound(playerSelection, getComputerChoice());
+    console.log(outcome);
 }
 
 /** Prompt user for his selection */
 const userSelection = prompt("Rock|Paper|Scissors?");
+game(userSelection);
