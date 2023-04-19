@@ -103,7 +103,7 @@ function game() {
             if (playerScore === 5 || computerScore === 5) {
                 if (playerScore === 5) {
                     display.textContent = "You Win!!!!!";
-                } else display.textContent = "Oops, Computer Won";
+                } else display.textContent = "Oops, Computer Won :(";
                 computerScore = 0;
                 playerScore = 0;
             }
