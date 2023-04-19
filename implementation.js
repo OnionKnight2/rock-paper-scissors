@@ -64,7 +64,7 @@ function game() {
     let playerScore = 0;
     
     // Create 3 buttons with ids, one for each selection and append them to a container div
-    const container = document.querySelector('.container');
+    const resContainer = document.querySelector('.res-container');
     const rockBtn = document.createElement('button');
     rockBtn.textContent = "Rock";
     rockBtn.setAttribute("id", "rock")
@@ -74,9 +74,9 @@ function game() {
     const scissorsBtn = document.createElement('button');
     scissorsBtn.textContent = "Scissors";
     scissorsBtn.setAttribute("id", "scissors");
-    container.appendChild(rockBtn); 
-    container.appendChild(paperBtn);
-    container.appendChild(scissorsBtn);
+    document.querySelector('.btnimg1').appendChild(rockBtn); 
+    document.querySelector('.btnimg2').appendChild(paperBtn);
+    document.querySelector('.btnimg3').appendChild(scissorsBtn);
 
     // Add event listener to each button
     const buttons = document.querySelectorAll('button');
@@ -86,14 +86,18 @@ function game() {
             switch(result) {
                 case 'computer':
                     computerScore++;
-                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+                    draw.style.visibility = "hidden";
+                    display.textContent = `PLAYER ${playerScore} - ${computerScore} COMPUTER`;
                     break;
                 case 'player':
-                    playerScore++;
-                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+                    playerScore++;                
+                    draw.style.visibility = "hidden";
+                    display.textContent = `PLAYER ${playerScore} - ${computerScore} COMPUTER`;
                     break;
                 default:
-                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+                    draw.style.visibility = "visible";
+                    display.textContent = `PLAYER ${playerScore} - ${computerScore} COMPUTER`;
+                    break;
             }
             // Follow the score
             if (playerScore === 5 || computerScore === 5) {
@@ -109,7 +113,13 @@ function game() {
     // Add a div for displaying results 
     const display = document.createElement('div');
     display.setAttribute("id", "display");
-    container.appendChild(display);
+    display.textContent = `PLAYER ${playerScore} - ${computerScore} COMPUTER`;
+    resContainer.appendChild(display);
+    
+    // Add an information if the round ended in draw
+    const draw = document.querySelector('.result');
+    draw.textContent = "draw";
+    draw.style.visibility = "hidden";
 }
 
 game();
