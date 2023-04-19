@@ -27,11 +27,13 @@ function getComputerChoice() {
  * It calls another function to write out the result.
  * This function now only returns who won: player or computer or if it's a tie
  */
-function playSingleRound(playerSelection, computerSelection) {
-    playerSelectionLowerCase = playerSelection.toLowerCase();
-    computerSelectionLowerCase = computerSelection.toLowerCase();
-    console.log(writeResult(playerSelectionLowerCase, computerSelectionLowerCase));
 
+// Find player selection based on what the user clicked
+function playSingleRound(buttonClicked) {
+    playerSelectionLowerCase = buttonClicked.textContent.toLowerCase();
+    computerSelectionLowerCase = getComputerChoice().toLowerCase();
+
+    // Return who won the round or if it's a draw
     switch(playerSelectionLowerCase) {
         case "rock":
             return (computerSelectionLowerCase === "rock") ? "draw" :
@@ -50,32 +52,6 @@ function playSingleRound(playerSelection, computerSelection) {
     }
 }
 
-/** This is a helper function used to write out outcome for a single game. 
- *  It takes 2 parameters, player selection and a computer selection.
- *  Based on them, it returns a string containing a result, the winner and the loser.
- */
-function writeResult(playerSelection, computerSelection) {
-    switch(playerSelection) {
-        case "rock":
-            return (computerSelection === "rock") ? "Draw! Rock draws Rock" :
-                (computerSelectionLowerCase === "paper") ? "You Lose! Paper beats Rock" :
-                "You Win! Rock beats Scissors";
-        
-        case "paper":
-            return (computerSelection === "rock") ? "You Win! Paper beats Rock" :
-                (computerSelection === "paper") ? "Draw! Paper draws Paper" :
-                "You Lose! Scissors beat Paper";
-        
-        case "scissors":
-            return (computerSelection === "rock") ? "You Lose! Rock beats Scissors" :
-                (computerSelection === "paper") ? "You Win! Scissors beat Paper" :
-                "Draw! Scissors draw Scissors";
-
-        default:
-            return "Please enter a valid word";
-    }
-}
-
 /** This function is used to play a 5 round game, keep the score and declare a winner. 
  *  Function playSingleRound() must be rewritten to return a result, not to write out outcome.
  *  This function should take the output from that function and use it to keep score. It should loop 5 times.
@@ -86,33 +62,54 @@ function writeResult(playerSelection, computerSelection) {
 function game() {    
     let computerScore = 0;
     let playerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        /** Prompt user for his selection */
-        const playerSelection = prompt("Rock|Paper|Scissors?");
-        const outcome = playSingleRound(playerSelection, getComputerChoice());
+    
+    // Create 3 buttons with ids, one for each selection and append them to a container div
+    const container = document.querySelector('.container');
+    const rockBtn = document.createElement('button');
+    rockBtn.textContent = "Rock";
+    rockBtn.setAttribute("id", "rock")
+    const paperBtn = document.createElement('button');
+    paperBtn.textContent = "Paper";
+    paperBtn.setAttribute("id", "paper");
+    const scissorsBtn = document.createElement('button');
+    scissorsBtn.textContent = "Scissors";
+    scissorsBtn.setAttribute("id", "scissors");
+    container.appendChild(rockBtn); 
+    container.appendChild(paperBtn);
+    container.appendChild(scissorsBtn);
 
-        switch(outcome) {
-            case "player":
-                playerScore++;
-                break;
-            
-            case "computer":
-                computerScore++;
-                break;
-        }
+    // Add event listener to each button
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const result = playSingleRound(button);
+            switch(result) {
+                case 'computer':
+                    computerScore++;
+                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+                    break;
+                case 'player':
+                    playerScore++;
+                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+                    break;
+                default:
+                    display.textContent = `Player ${playerScore} - ${computerScore} Computer`;
+            }
+            // Follow the score
+            if (playerScore === 5 || computerScore === 5) {
+                if (playerScore === 5) {
+                    display.textContent = "You Win!!!!!";
+                } else display.textContent = "Oops, Computer Won";
+                computerScore = 0;
+                playerScore = 0;
+            }
+        });
+    });
 
-        console.log(`Current score: ${playerScore} - ${computerScore}`);
-    }
-
-    if (playerScore > computerScore) {
-        console.log(`Player Wins! Final score: ${playerScore} - ${computerScore}`);
-    }
-    else if (computerScore > playerScore) {
-        console.log(`Computer Wins! Final score: ${playerScore} - ${computerScore}`);
-    }
-    else {
-        console.log(`It's a Draw! Final score: ${playerScore} - ${computerScore}`);
-    }
+    // Add a div for displaying results 
+    const display = document.createElement('div');
+    display.setAttribute("id", "display");
+    container.appendChild(display);
 }
 
 game();
